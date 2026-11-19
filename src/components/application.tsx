@@ -122,7 +122,7 @@ export function ApplicationSidebar({ view, onNavigate, compact = false, profileO
   </aside>
 }
 
-function AppShell({ view, children, onNavigate, compact = false, shellHeight = '1149px' }: { view: AppView; children: ReactNode; onNavigate?: (view: AppView) => void; compact?: boolean; shellHeight?: string }) {
+function AppShell({ view, children, onNavigate, compact = false, shellHeight = '1149px' }: { view: AppView; children: ReactNode; onNavigate?: (view: AppView, href?: string) => void; compact?: boolean; shellHeight?: string }) {
   const [menu, setMenu] = useState<'search' | 'notifications' | 'profile' | null>(null)
   const [profileAnchor, setProfileAnchor] = useState<'sidebar' | 'topbar'>('topbar')
   const [search, setSearch] = useState('')
@@ -155,7 +155,7 @@ function AppShell({ view, children, onNavigate, compact = false, shellHeight = '
   }
 
   function searchDestination(href: string) {
-    if (onNavigate) { onNavigate('invoices'); setMenu(null) }
+    if (onNavigate) { onNavigate('invoices', href); setMenu(null) }
     else window.location.assign(href)
   }
 
@@ -296,7 +296,7 @@ export function DashboardFinancialOverview() {
   return <div className="dashboard-overview"><section className="balance-overview"><div><span className="balance-label">Cash balance</span><strong className="balance-amount financial-value">{formatUSD(cashBalance)}</strong><span className="balance-context">Across business activity through March 24</span></div><div className="balance-net"><span>Net income this period</span><strong className="financial-value">{formatUSD(netIncome)}</strong><small>Oct 2025 — Mar 2026</small></div></section><div className="overview-side"><div><span>Open invoices</span><strong className="financial-value">{formatUSD(dashboardOpenBalance)}</strong><small>{openInvoices.length} invoices · {openInvoices.filter(invoice => invoice.status === 'Overdue').length} past due</small></div><div><span>Collected in March</span><strong className="financial-value">{formatUSD(dashboardCollectedThisMonth)}</strong><small>{marchInvoices.length} payments received</small></div></div></div>
 }
 
-export function DashboardScreen({ onNavigate, compact = false, shellHeight }: { onNavigate?: (view: AppView) => void; compact?: boolean; shellHeight?: string }) {
+export function DashboardScreen({ onNavigate, compact = false, shellHeight }: { onNavigate?: (view: AppView, href?: string) => void; compact?: boolean; shellHeight?: string }) {
   useInvoiceRevision()
   const dashboardInvoices = readInvoices()
   const newInvoice = compact
@@ -316,7 +316,7 @@ function filterInvoiceRows(rows: Invoice[], filter: InvoiceFilter, query: string
   return rows.filter(invoice => (filter === 'All' || invoice.status === filter) && (!normalizedQuery || `${invoice.id} ${invoice.client} ${invoice.status}`.toLowerCase().includes(normalizedQuery)))
 }
 
-export function InvoiceListScreen({ onNavigate, compact = false }: { onNavigate?: (view: AppView) => void; compact?: boolean }) {
+export function InvoiceListScreen({ onNavigate, compact = false }: { onNavigate?: (view: AppView, href?: string) => void; compact?: boolean }) {
   useInvoiceRevision()
   const saved = readDraft()
   const allRows = [...(saved ? [saved] : []), ...readInvoices().filter(item => item.id !== saved?.id)]
@@ -349,7 +349,7 @@ export function InvoiceListScreen({ onNavigate, compact = false }: { onNavigate?
   </AppShell>
 }
 
-export function CreateInvoiceScreen({ onNavigate, compact = false, demoStep = -1, shellHeight }: { onNavigate?: (view: AppView) => void; compact?: boolean; demoStep?: number; shellHeight?: string }) {
+export function CreateInvoiceScreen({ onNavigate, compact = false, demoStep = -1, shellHeight }: { onNavigate?: (view: AppView, href?: string) => void; compact?: boolean; demoStep?: number; shellHeight?: string }) {
   const editId = new URLSearchParams(window.location.search).get('edit')
   const editingInvoice = editId ? readInvoices().find(invoice => invoice.id === editId) ?? (readDraft()?.id === editId ? readDraft() : null) : null
   const initialDocument = editingInvoice ? documentForInvoice(editingInvoice) : null
@@ -455,7 +455,7 @@ export function CreateInvoiceScreen({ onNavigate, compact = false, demoStep = -1
   </AppShell>
 }
 
-export function ApplicationScreen({ view, onNavigate, compact = false }: { view: AppView; onNavigate?: (view: AppView) => void; compact?: boolean }) {
+export function ApplicationScreen({ view, onNavigate, compact = false }: { view: AppView; onNavigate?: (view: AppView, href?: string) => void; compact?: boolean }) {
   if (view === 'invoices') return <InvoiceListScreen onNavigate={onNavigate} compact={compact} />
   if (view === 'create-invoice') return <CreateInvoiceScreen onNavigate={onNavigate} compact={compact} />
   return <DashboardScreen onNavigate={onNavigate} compact={compact} />
