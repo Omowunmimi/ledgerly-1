@@ -13,7 +13,7 @@ export default function LedgerlyProductCanvas() {
         id="Marketing Desktop"
         name="Marketing · Desktop · Full page"
         component={MarketingSite}
-        layout={{ x: 0, y: 0, width: 1440, height: 9800 }}
+        layout={{ x: 0, y: 0, width: 1440, height: 9237.859375 }}
       />
       <Storyboard
         id="Marketing Mobile"
@@ -25,14 +25,14 @@ export default function LedgerlyProductCanvas() {
       <Storyboard
         id="Dashboard Desktop"
         name="Dashboard · Desktop"
-        component={DashboardScreen}
-        layout={{ x: 0, y: 12343, width: 1440, height: 1280 }}
+        component={() => <DashboardScreen shellHeight="1260px" />}
+        layout={{ x: 0, y: 12343, width: 1440, height: 1260 }}
       />
       <Storyboard
         id="Dashboard Mobile"
         name="Dashboard · Mobile"
-        component={DashboardScreen}
-        layout={{ x: 1540, y: 11977, width: 390, height: 1900 }}
+        component={() => <DashboardScreen shellHeight="1768px" />}
+        layout={{ x: 1553, y: 12343, width: 390, height: 1768 }}
       />
 
       <Storyboard
@@ -57,8 +57,8 @@ export default function LedgerlyProductCanvas() {
       <Storyboard
         id="Create Invoice Mobile"
         name="Create Invoice · Mobile"
-        component={CreateInvoiceScreen}
-        layout={{ x: 1540, y: 15679, width: 390, height: 3000 }}
+        component={() => <CreateInvoiceScreen shellHeight="2826px" />}
+        layout={{ x: 5665, y: 12343, width: 390, height: 2826 }}
       />
     </Canvas>
   );

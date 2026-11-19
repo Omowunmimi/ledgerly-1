@@ -122,7 +122,7 @@ export function ApplicationSidebar({ view, onNavigate, compact = false, profileO
   </aside>
 }
 
-function AppShell({ view, children, onNavigate, compact = false }: { view: AppView; children: ReactNode; onNavigate?: (view: AppView) => void; compact?: boolean }) {
+function AppShell({ view, children, onNavigate, compact = false, shellHeight = '1149px' }: { view: AppView; children: ReactNode; onNavigate?: (view: AppView) => void; compact?: boolean; shellHeight?: string }) {
   const [menu, setMenu] = useState<'search' | 'notifications' | 'profile' | null>(null)
   const [profileAnchor, setProfileAnchor] = useState<'sidebar' | 'topbar'>('topbar')
   const [search, setSearch] = useState('')
@@ -159,7 +159,7 @@ function AppShell({ view, children, onNavigate, compact = false }: { view: AppVi
     else window.location.assign(href)
   }
 
-  return <div className={`application-shell${compact ? ' application-shell-compact' : ''}`} style={{ height: '1149px' }}>
+  return <div className={`application-shell${compact ? ' application-shell-compact' : ''}`} style={{ height: shellHeight }}>
     <ApplicationSidebar
       view={view}
       onNavigate={compact ? undefined : navigate}
@@ -296,7 +296,7 @@ export function DashboardFinancialOverview() {
   return <div className="dashboard-overview"><section className="balance-overview"><div><span className="balance-label">Cash balance</span><strong className="balance-amount financial-value">{formatUSD(cashBalance)}</strong><span className="balance-context">Across business activity through March 24</span></div><div className="balance-net"><span>Net income this period</span><strong className="financial-value">{formatUSD(netIncome)}</strong><small>Oct 2025 — Mar 2026</small></div></section><div className="overview-side"><div><span>Open invoices</span><strong className="financial-value">{formatUSD(dashboardOpenBalance)}</strong><small>{openInvoices.length} invoices · {openInvoices.filter(invoice => invoice.status === 'Overdue').length} past due</small></div><div><span>Collected in March</span><strong className="financial-value">{formatUSD(dashboardCollectedThisMonth)}</strong><small>{marchInvoices.length} payments received</small></div></div></div>
 }
 
-export function DashboardScreen({ onNavigate, compact = false }: { onNavigate?: (view: AppView) => void; compact?: boolean }) {
+export function DashboardScreen({ onNavigate, compact = false, shellHeight }: { onNavigate?: (view: AppView) => void; compact?: boolean; shellHeight?: string }) {
   useInvoiceRevision()
   const dashboardInvoices = readInvoices()
   const newInvoice = compact
@@ -304,7 +304,7 @@ export function DashboardScreen({ onNavigate, compact = false }: { onNavigate?: 
     : onNavigate
       ? <Button leadingIcon={<Plus aria-hidden="true" />} onClick={() => onNavigate('create-invoice')}>New invoice</Button>
       : <a className="button" data-variant="primary" data-size="md" href="/app/create-invoice"><Plus aria-hidden="true" /><span>New invoice</span></a>
-  return <AppShell view="dashboard" onNavigate={onNavigate} compact={compact}><PageHeading title="Good morning, Olivia" description={`${formatToday()} · Northstar Studio`}>{newInvoice}</PageHeading>
+  return <AppShell view="dashboard" onNavigate={onNavigate} compact={compact} shellHeight={shellHeight}><PageHeading title="Good morning, Olivia" description={`${formatToday()} · Northstar Studio`}>{newInvoice}</PageHeading>
     <DashboardFinancialOverview />
     <div className="dashboard-main-grid"><CashFlowPanel /><section className="dashboard-recent"><div className="section-panel-heading"><div><h2>Latest invoices</h2><p>Recent client billing</p></div>{compact ? <span className="text-link">View all<ArrowRight aria-hidden="true" /></span> : onNavigate ? <button className="text-link" onClick={() => onNavigate('invoices')}>View all<ArrowRight aria-hidden="true" /></button> : <a className="text-link" href="/app/invoices">View all<ArrowRight aria-hidden="true" /></a>}</div><InvoiceTable rows={dashboardInvoices.slice(0, 4)} compact /></section></div>
     <ActivityPanel />
@@ -349,7 +349,7 @@ export function InvoiceListScreen({ onNavigate, compact = false }: { onNavigate?
   </AppShell>
 }
 
-export function CreateInvoiceScreen({ onNavigate, compact = false, demoStep = -1 }: { onNavigate?: (view: AppView) => void; compact?: boolean; demoStep?: number }) {
+export function CreateInvoiceScreen({ onNavigate, compact = false, demoStep = -1, shellHeight }: { onNavigate?: (view: AppView) => void; compact?: boolean; demoStep?: number; shellHeight?: string }) {
   const editId = new URLSearchParams(window.location.search).get('edit')
   const editingInvoice = editId ? readInvoices().find(invoice => invoice.id === editId) ?? (readDraft()?.id === editId ? readDraft() : null) : null
   const initialDocument = editingInvoice ? documentForInvoice(editingInvoice) : null
@@ -435,7 +435,7 @@ export function CreateInvoiceScreen({ onNavigate, compact = false, demoStep = -1
   }
   const cancelAction = onNavigate ? <Button variant="outline" onClick={() => onNavigate('invoices')}>Cancel</Button> : <a className="button" data-variant="outline" data-size="md" href="/app/invoices">Cancel</a>
   const headerActions = <div className="create-invoice-header-actions"><Button variant="secondary" onClick={() => saveDraft()}>{editingInvoice ? 'Save Changes' : 'Save as Draft'}</Button><Button onClick={() => { if (validate()) setReviewOpen(true) }}>Review Invoice</Button></div>
-  return <AppShell view="create-invoice" onNavigate={onNavigate} compact={compact}><div className="create-heading"><a className="back-link" href="/app/invoices"><ArrowRight aria-hidden="true" />Invoices</a><PageHeading title={editingInvoice ? 'Edit Invoice' : 'Create Invoice'} description={editingInvoice ? `Update ${editingInvoice.id} and review the client-ready document.` : 'Prepare a clear invoice for your client.'}>{headerActions}</PageHeading></div>
+  return <AppShell view="create-invoice" onNavigate={onNavigate} compact={compact} shellHeight={shellHeight}><div className="create-heading"><a className="back-link" href="/app/invoices"><ArrowRight aria-hidden="true" />Invoices</a><PageHeading title={editingInvoice ? 'Edit Invoice' : 'Create Invoice'} description={editingInvoice ? `Update ${editingInvoice.id} and review the client-ready document.` : 'Prepare a clear invoice for your client.'}>{headerActions}</PageHeading></div>
     <div className={`create-invoice-layout${demoStep >= 0 ? ' guided-invoice' : ''}`} data-demo-step={demoStep}>
       <form className="invoice-form" onSubmit={saveDraft} noValidate>
         <section className="form-section-card" data-demo-target="customer"><div className="form-section-heading"><span>01</span><div><h2>Client details</h2><p>Choose a client and confirm where the invoice should go.</p></div></div><div className="form-grid"><SelectField label="Client" value={customer} options={[{ value: '', label: 'Choose a client' }, ...customerOptions]} onChange={event => { setCustomer(event.target.value); updateError('customer') }} error={errors.customer} /><Field label="Email address" type="email" value={customerEmails[customer] ?? ''} readOnly hint={details?.company ?? ''} /></div><p className="client-address">{details?.address ?? 'Select a client to see their billing address.'}</p></section>
