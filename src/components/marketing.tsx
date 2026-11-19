@@ -88,7 +88,7 @@ function InvoiceExplorer() {
   const total = subtotal * (1 + taxRate / 100)
   const activeClient = customerOptions.find(option => option.value === customer)?.label ?? 'Field Studio'
   const steps = ['Client', 'Work', 'Review']
-  return <section className="guided-section" id="guided-demo"><div className="guided-layout"><div className="guided-intro" data-reveal><h2>Build an invoice as you go.</h2><p>Choose a client, shape the work and check the finished document before you commit. The total updates as you edit.</p><span className="guided-instructions">Choose a customer, adjust the work and tax, then use the two actions below to try the workflow.</span></div>
+  return <section style={{ paddingTop: "112px", paddingRight: "0px", paddingBottom: "112px", paddingLeft: "0px" }} className="guided-section" id="guided-demo"><div className="guided-layout"><div className="guided-intro" data-reveal><h2>Build an invoice as you go.</h2><p>Choose a client, shape the work and check the finished document before you commit. The total updates as you edit.</p><span className="guided-instructions">Choose a customer, adjust the work and tax, then use the two actions below to try the workflow.</span></div>
     <div className="explorer-workspace" data-reveal><div className="invoice-explorer">
       <div className="explorer-form"><div className="explorer-topline"><span>New invoice</span><span>NS-2026-015</span></div><div className="explorer-steps" role="tablist" aria-label="Invoice setup steps">{steps.map((item, index) => <button type="button" role="tab" aria-selected={step === index} data-active={step === index} key={item} onClick={() => setStep(index)}><i>{index < step ? <Check aria-hidden="true" /> : index + 1}</i>{item}</button>)}</div>
         {step === 0 && <div className="explorer-fields"><SelectField label="Client" value={customer} options={customerOptions} onChange={event => setCustomer(event.target.value)} /><div className="explorer-client-detail"><CircleUserRound aria-hidden="true" /><span><strong>{activeClient}</strong><small>{customerDetails[customer].email}</small></span></div><div className="explorer-date-line"><span>Invoice date <strong>Mar 24, 2026</strong></span><span>Due date <strong>Apr 7, 2026</strong></span></div></div>}
@@ -153,9 +153,9 @@ export default function MarketingSite() {
   }, [])
   return <div id="top" className="marketing-site">
     <MarketingHeader />
-    <main style={{ height: "11658px" }}>
+    <main>
       <section className="marketing-hero"><div className="section-shell hero-inner"><div className="hero-copy"><h1>Your business finances, in clear view.</h1><p>Ledgerly brings invoicing, expenses, customers and cash flow together for small-business owners who need a reliable view of what is happening and what needs attention.</p><div className="hero-actions"><a className="button hero-primary-cta" data-variant="secondary" data-size="lg" href="/app/dashboard">Get Started<ArrowRight aria-hidden="true" /></a><a style={{ justifyContent: "center" }} className="hero-text-link" href="#guided-demo">See How It Works</a></div></div><div className="hero-preview-wrap"><div className="hero-product-shell"><div className="preview-chrome"><span className="preview-dots" aria-hidden="true"><i /><i /><i /></span><span>Ledgerly · Northstar Studio</span><span>Mar 2026</span></div><div className="hero-product-content"><DashboardScreen compact /></div></div></div></div></section>
-      <section className="statement-section section-shell" id="about" data-reveal style={{ margin: '140px 100px 64px', marginTop: '80px', marginBottom: '80px', marginLeft: '100px', marginRight: '20px' }}>
+      <section className="statement-section section-shell" id="about" data-reveal>
         <div className="statement-copy">
           <h2>So your business can see what it owes.</h2>
           <p>Bring invoices, receipts and customer details together. See what is coming in, what has gone out and which obligation needs your attention without piecing the picture together from separate tools.</p>
