@@ -6,8 +6,8 @@ import {
   EmptyState, FeedbackState, Field, IconButton, IconographyPack, LoadingState, MetricCard,
   Modal, Pagination, SelectField, StatusBadge, Tabs, TextAreaField, Toast, Tooltip,
 } from "../../../../src/components/system";
-import { CashFlowChart, CashFlowLegend, CreateInvoiceScreen, DashboardScreen, InvoiceListScreen, InvoiceTable } from "../../../../src/components/application";
-import { PricingCard } from "../../../../src/components/marketing";
+import { ApplicationSidebar, CashFlowChart, CashFlowLegend, CreateInvoiceScreen, DashboardFinancialOverview, DashboardScreen, InvoiceListScreen, InvoiceTable } from "../../../../src/components/application";
+import { MarketingHeader, PricingCard } from "../../../../src/components/marketing";
 
 export default function LedgerlyDesignSystemCanvas() {
   return (
@@ -211,6 +211,21 @@ defineAsset(DashboardScreen, {
   variants: { FullApplication: { props: {} }, CompactPreview: { props: { compact: true } } },
 });
 
+defineAsset(ApplicationSidebar, {
+  libraries: ["Ledgerly Design System"],
+  usageInstructions: "Use this shared application sidebar for workspace identity, navigation groups, support and account actions. Keep the active item aligned with the current application view.",
+  variants: {
+    Dashboard: { props: { view: "dashboard", compact: true } },
+    InvoiceList: { props: { view: "invoices", compact: true } },
+  },
+});
+
+defineAsset(DashboardFinancialOverview, {
+  libraries: ["Ledgerly Design System"],
+  usageInstructions: "Use the actual Dashboard financial summary layout for cash balance, net income, open invoices and monthly collections. Keep this composition distinct from the generic MetricCard component.",
+  variants: { DashboardData: { props: {} } },
+});
+
 defineAsset(InvoiceListScreen, {
   libraries: ["Ledgerly Design System"],
   usageInstructions: "Use as the complete Invoice List composition. Compact mode removes the standalone shell for embedded product previews.",
@@ -227,4 +242,13 @@ defineAsset(PricingCard, {
   libraries: ["Ledgerly Design System"],
   usageInstructions: "Use for clearly tiered monthly subscriptions, with a concise audience, price and included features.",
   variants: { Standard: { props: { name: "Independent", descriptor: "For a business of one.", detail: "A clear start for personal client work.", monthlyPrice: 18, features: ["Invoice creation and tracking", "Expense records", "Monthly cash-flow view"], href: "#pricing" } }, Featured: { props: { name: "Studio", descriptor: "For a small, growing team.", detail: "Shared day-to-day finance work.", monthlyPrice: 36, features: ["Everything in Independent", "Shared business workspace", "Expense review and matching"], href: "#pricing", featured: true } } },
+});
+
+defineAsset(MarketingHeader, {
+  libraries: ["Ledgerly Design System"],
+  usageInstructions: "Use the production responsive marketing header, including its desktop navigation, mobile menu, sign-in link and primary action. Use preview mode only when embedding it inside the design-system showcase.",
+  variants: {
+    Website: { props: { preview: false } },
+    DesignSystemPreview: { props: { preview: true } },
+  },
 });

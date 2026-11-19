@@ -132,12 +132,8 @@
 .marketing-sample-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr); gap: 0.75rem; align-items: start; }
 .marketing-header-sample { grid-column: 1 / -1; padding: 1.125rem; }
 .marketing-header-label { color: var(--color-text-muted); font-size: 0.625rem; font-weight: 600; }
-.sample-header-nav { min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-radius: 0.625rem; background: var(--color-marketing-hero-background); color: #f7f9f8; margin-top: 0.625rem; padding: 0.75rem 1rem; }
-.sample-header-nav .ledgerly-wordmark { color: #f7f9f8; font-size: 1rem; }
-.sample-header-nav .ledgerly-mark { transform: scale(0.75) skewY(-18deg); transform-origin: left bottom; }
-.sample-header-nav > span:not(.ledgerly-wordmark) { color: #d2d9d5; font-size: 0.6875rem; }
-.sample-header-nav .button { min-height: 2.25rem; padding: 0.5rem 0.625rem; font-size: 0.625rem; }
-.sample-header-nav .button svg { width: 0.875rem; height: 0.875rem; }
+.marketing-header-sample { min-width: 0; }
+.marketing-header-preview-site { margin-top: 0.625rem; overflow: hidden; border: 1px solid var(--color-border-subtle); border-radius: 0.625rem; background: var(--color-marketing-hero-background); }
 .marketing-header-sample > p { margin: 0.625rem 0 0; color: var(--color-text-muted); font-size: 0.6875rem; }
 .marketing-sample-grid .pricing-card { max-width: none; }
 .responsive-demo-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.55fr); gap: 1rem; align-items: start; }
@@ -232,10 +228,8 @@
   .responsive-device-wide { height: 30rem; }
   .responsive-device-mobile { width: min(100%, 24rem); height: 34rem; }
   .marketing-sample-grid .pricing-card { max-width: none; }
-  .sample-header-nav { flex-wrap: wrap; gap: 0.625rem; padding: 0.75rem; }
-  .sample-header-nav > span:not(.ledgerly-wordmark) { display: none; }
   .showcase-footer { align-items: flex-start; flex-direction: column; }
-  .iconography-foundation .ledgerly-icon-pack { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .iconography-inventory .ledgerly-icon-pack { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @media (min-width: 781px) and (max-width: 1024px) {
@@ -254,7 +248,6 @@
 .app-showcase-shell .application-shell-compact .app-sidebar { min-height: 0; }
 .app-showcase-shell .application-shell-compact .dashboard-main-grid { align-items: start; }
 .component-row .button { flex: 0 0 auto; }
-.sample-header-nav .button { flex: 0 0 auto; }
 .design-system-showcase .button { flex-wrap: nowrap; white-space: nowrap; }
 .design-system-showcase .button > span { flex: 0 0 auto; white-space: nowrap; }
 
@@ -264,4 +257,22 @@
   .app-showcase-shell .application-shell-compact .app-main-column { width: 100%; }
   .app-showcase-shell .application-shell-compact .app-content { width: 100%; }
   .nav-pattern-controls .button { max-width: 100%; }
+}
+
+.navigation-component-grid { display: grid; grid-template-columns: minmax(15rem, 0.3fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.app-sidebar-showcase-frame { height: 42rem; overflow: hidden; border: 1px solid var(--color-border-default); border-radius: 0.75rem; background: #fbfcfc; }
+.app-sidebar-showcase-frame .app-sidebar { width: 100%; height: 100%; min-height: 0; position: relative; overflow: auto; }
+.dashboard-financial-example { margin-bottom: 1rem; }
+.iconography-inventory .ledgerly-icon-pack { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 0.5rem; }
+.marketing-header-preview-site .marketing-header { position: relative; top: auto; }
+
+@media (max-width: 780px) {
+  .navigation-component-grid { grid-template-columns: minmax(0, 1fr); }
+  .app-sidebar-showcase-frame { width: min(100%, 19rem); height: 38rem; }
+  .iconography-inventory .ledgerly-icon-pack { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 781px) and (max-width: 1024px) {
+  .navigation-component-grid { grid-template-columns: minmax(14rem, 0.42fr) minmax(0, 1fr); }
+  .iconography-inventory .ledgerly-icon-pack { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }

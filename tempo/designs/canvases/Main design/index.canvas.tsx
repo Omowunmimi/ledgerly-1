@@ -26,20 +26,20 @@ export default function LedgerlyProductCanvas() {
         id="Dashboard Desktop"
         name="Dashboard · Desktop"
         component={DashboardScreen}
-        layout={{ x: 0, y: 10100, width: 1440, height: 1280 }}
+        layout={{ x: 0, y: 12343, width: 1440, height: 1280 }}
       />
       <Storyboard
         id="Dashboard Mobile"
         name="Dashboard · Mobile"
         component={DashboardScreen}
-        layout={{ x: 1540, y: 12100, width: 390, height: 1900 }}
+        layout={{ x: 1540, y: 11977, width: 390, height: 1900 }}
       />
 
       <Storyboard
         id="Invoices Desktop"
         name="Invoice List · Desktop"
         component={InvoiceListScreen}
-        layout={{ x: 0, y: 11600, width: 1440, height: 1260 }}
+        layout={{ x: 2056, y: 12343, width: 1440, height: 1260 }}
       />
       <Storyboard
         id="Invoices Mobile"
@@ -52,7 +52,7 @@ export default function LedgerlyProductCanvas() {
         id="Create Invoice Desktop"
         name="Create Invoice · Desktop"
         component={CreateInvoiceScreen}
-        layout={{ x: 0, y: 13100, width: 1440, height: 1860 }}
+        layout={{ x: 4112, y: 12343, width: 1440, height: 1860 }}
       />
       <Storyboard
         id="Create Invoice Mobile"

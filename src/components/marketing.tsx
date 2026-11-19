@@ -116,21 +116,17 @@ const questions = [
   { question: 'How do pricing and getting started work?', answer: 'Choose a plan for an independent business, a small team or client work. The Starter plan begins with a 30-day free period; the other plans are billed monthly.' },
 ]
 
-export default function MarketingSite() {
+/** The canvas for this shared marketing header is at tempo/designs/design-system/ledgerly-design-system/index.canvas.tsx. Keep its showcase aligned with the production header. */
+export function MarketingHeader({ preview = false }: { preview?: boolean }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const mobileMenuButtonRef = useRef<HTMLButtonElement>(null)
-  useEffect(() => {
-    const items = document.querySelectorAll<HTMLElement>('[data-reveal]')
-    const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target) } }), { threshold: 0.14 })
-    items.forEach(item => observer.observe(item))
-    return () => observer.disconnect()
-  }, [])
+  const navigationId = preview ? 'marketing-preview-nav' : 'marketing-mobile-nav'
   const closeMobileMenu = () => setMobileMenuOpen(false)
   useEffect(() => {
     if (!mobileMenuOpen) return
     const priorOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const menu = document.getElementById('marketing-mobile-nav')
+    const menu = document.getElementById(navigationId)
     const mobileLinks = menu?.querySelectorAll<HTMLAnchorElement>('a[href]')
     mobileLinks?.[0]?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
@@ -143,13 +139,41 @@ export default function MarketingSite() {
     }
     window.addEventListener('keydown', onKeyDown)
     return () => { document.body.style.overflow = priorOverflow; window.removeEventListener('keydown', onKeyDown) }
-  }, [mobileMenuOpen])
+  }, [mobileMenuOpen, navigationId])
   const links = [{ label: 'Product', href: '#capabilities' }, { label: 'How it works', href: '#guided-demo' }, { label: 'Capabilities', href: '#capabilities' }, { label: 'Pricing', href: '#pricing' }, { label: 'Get started', href: '/app/create-invoice', className: 'button mobile-nav-cta', variant: 'secondary' }]
+  return <header className={`marketing-header${preview ? ' marketing-header-preview' : ''}`}><div className="section-shell header-inner"><Brand inverse href={preview ? '#marketing-preview-top' : '#top'} /><nav id={navigationId} className={mobileMenuOpen ? 'marketing-nav marketing-nav-open' : 'marketing-nav'} aria-label="Main navigation">{links.map(link => <a className={link.className} data-variant={link.variant} data-size={link.variant ? 'md' : undefined} href={link.href} key={link.href} onClick={closeMobileMenu}>{link.label}</a>)}</nav><div className="header-actions"><a className="header-secondary" href="/app/dashboard">Sign in</a><a className="button header-cta" data-variant="secondary" data-size="md" href="/app/create-invoice">Get started<ArrowRight aria-hidden="true" /></a></div><button ref={mobileMenuButtonRef} className="mobile-menu-toggle" aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileMenuOpen} aria-controls={navigationId} onClick={() => setMobileMenuOpen(value => !value)}>{mobileMenuOpen ? <X /> : <Menu />}</button></div>{mobileMenuOpen && <button className="marketing-menu-backdrop" aria-label="Close navigation" onClick={closeMobileMenu} />}</header>
+}
+
+export default function MarketingSite() {
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>('[data-reveal]')
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target) } }), { threshold: 0.14 })
+    items.forEach(item => observer.observe(item))
+    return () => observer.disconnect()
+  }, [])
   return <div id="top" className="marketing-site">
-    <header className="marketing-header"><div className="section-shell header-inner"><Brand inverse href="#top" /><nav id="marketing-mobile-nav" className={mobileMenuOpen ? 'marketing-nav marketing-nav-open' : 'marketing-nav'} aria-label="Main navigation">{links.map(link => <a className={link.className} data-variant={link.variant} data-size={link.variant ? 'md' : undefined} href={link.href} key={link.href} onClick={closeMobileMenu}>{link.label}</a>)}</nav><div className="header-actions"><a className="header-secondary" href="/app/dashboard">Sign in</a><a className="button header-cta" data-variant="secondary" data-size="md" href="/app/create-invoice">Get started<ArrowRight aria-hidden="true" /></a></div><button ref={mobileMenuButtonRef} className="mobile-menu-toggle" aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileMenuOpen} aria-controls="marketing-mobile-nav" onClick={() => setMobileMenuOpen(value => !value)}>{mobileMenuOpen ? <X /> : <Menu />}</button></div>{mobileMenuOpen && <button className="marketing-menu-backdrop" aria-label="Close navigation" onClick={closeMobileMenu} />}</header>
+    <MarketingHeader />
     <main>
       <section className="marketing-hero"><div className="section-shell hero-inner"><div className="hero-copy"><h1>Your business finances, in clear view.</h1><p>Ledgerly brings invoicing, expenses, customers and cash flow together for small-business owners who need a reliable view of what is happening and what needs attention.</p><div className="hero-actions"><a className="button hero-primary-cta" data-variant="secondary" data-size="lg" href="/app/dashboard">Get Started<ArrowRight aria-hidden="true" /></a><a style={{ justifyContent: "center" }} className="hero-text-link" href="#guided-demo">See How It Works</a></div></div><div className="hero-preview-wrap"><div className="hero-product-shell"><div className="preview-chrome"><span className="preview-dots" aria-hidden="true"><i /><i /><i /></span><span>Ledgerly · Northstar Studio</span><span>Mar 2026</span></div><div className="hero-product-content"><DashboardScreen compact /></div></div></div></div></section>
-      <section className="statement-section section-shell" id="about" data-reveal><div className="statement-copy"><h2>So your business can see what it owes.</h2><p>Bring invoices, receipts and customer details together. See what is coming in, what has gone out and which obligation needs your attention without piecing the picture together from separate tools.</p><div className="statement-story"><span>Your money, in one view</span><strong>Collected {formatUSD(cashFlow[5].income)} <i>·</i> spent {formatUSD(cashFlow[5].expenses)}</strong><p>After expenses, {formatUSD(cashFlow[5].income - cashFlow[5].expenses)} remains from this month's activity. {formatUSD(invoices.filter(invoice => invoice.status === 'Awaiting payment' || invoice.status === 'Overdue').reduce((sum, invoice) => sum + invoice.amount, 0))} in customer balances remains outside cash received.</p></div></div><div className="statement-finance-summary"><div className="story-event"><span className="story-event-mark story-event-in">+</span><span><small>Payment received</small><strong>Pacific House · Mar 22</strong></span><b className="financial-value">+{formatUSD(2400)}</b></div><div className="story-event"><span className="story-event-mark story-event-out">−</span><span><small>Recent expense</small><strong>Studio supplies · Mar 18</strong></span><b className="financial-value">−{formatUSD(186.4)}</b></div><div className="story-event story-event-attention"><span className="story-event-mark story-event-due">!</span><span><small>Needs a follow-up</small><strong>Overdue customer payment</strong></span><b className="financial-value">{formatUSD(980)}</b></div></div></section>
+      <section className="statement-section section-shell" id="about" data-reveal>
+        <div className="statement-copy">
+          <h2>So your business can see what it owes.</h2>
+          <p>Bring invoices, receipts and customer details together. See what is coming in, what has gone out and which obligation needs your attention without piecing the picture together from separate tools.</p>
+          <div className="statement-story">
+            <span>Your money, in one view</span>
+            <div className="statement-totals"><span><small>Collected</small><strong className="financial-value">{formatUSD(cashFlow[5].income)}</strong></span><i aria-hidden="true" /><span><small>Spent</small><strong className="financial-value">{formatUSD(cashFlow[5].expenses)}</strong></span></div>
+            <p>After expenses, {formatUSD(cashFlow[5].income - cashFlow[5].expenses)} remains from this month's activity. {formatUSD(invoices.filter(invoice => invoice.status === 'Awaiting payment' || invoice.status === 'Overdue').reduce((sum, invoice) => sum + invoice.amount, 0))} in customer balances remains outside cash received.</p>
+          </div>
+        </div>
+        <div className="statement-activity" aria-label="Recent financial activity">
+          <div className="statement-activity-heading"><div><span>Recent financial activity</span><strong>March 2026</strong></div><span className="statement-activity-count">3 updates</span></div>
+          <div className="statement-finance-summary">
+            <div className="story-event"><span className="story-event-mark story-event-in">+</span><span><small>Payment received</small><strong>Pacific House · Mar 22</strong></span><b className="financial-value">+{formatUSD(2400)}</b></div>
+            <div className="story-event"><span className="story-event-mark story-event-out">−</span><span><small>Recent expense</small><strong>Studio supplies · Mar 18</strong></span><b className="financial-value">−{formatUSD(186.4)}</b></div>
+            <div className="story-event story-event-attention"><span className="story-event-mark story-event-due">!</span><span><small>Needs a follow-up</small><strong>Overdue customer payment</strong></span><b className="financial-value">{formatUSD(980)}</b></div>
+          </div>
+        </div>
+      </section>
       <section className="capabilities section-shell" id="capabilities"><div className="capability-heading" data-reveal><h2>All the moving parts, finally in view.</h2><p>Keep client work, spending and the books connected to the same financial picture.</p></div>
         <div className="capability-bento">
           <article style={{ alignItems: "flex-start" }} className="bento-card bento-invoices" data-reveal><div style={{ height: "max-content" }} className="bento-copy"><h3>Invoices with a clear next step.</h3><p>See who owes what, when it is due and what has already been paid.</p></div><FeatureInvoiceTable /></article>
@@ -171,6 +195,7 @@ export default function MarketingSite() {
   </div>
 }
 
+defineControls(MarketingHeader, { preview: { type: 'boolean' } });
 defineControls(PricingCard, {
   name: { type: 'text' },
   descriptor: { type: 'text' },

@@ -6,7 +6,7 @@ import { downloadInvoicePdf } from '../lib/invoice-pdf'
 import { Brand, Button, Card, ChoiceField, Drawer, EmptyState, Field, Modal, Pagination, SelectField, StatusBadge, TextAreaField, Toast } from './system'
 
 /** The canvas for the shared application components in this file is at tempo/designs/design-system/ledgerly-design-system/index.canvas.tsx. */
-type AppView = 'dashboard' | 'invoices' | 'create-invoice'
+export type AppView = 'dashboard' | 'invoices' | 'create-invoice'
 type InvoiceFilter = 'All' | 'Awaiting payment' | 'Overdue' | 'Paid' | 'Draft'
 interface SavedInvoiceDraft extends Invoice { notes: string }
 
@@ -75,6 +75,53 @@ function InvoiceDocumentPreview({ invoice }: { invoice: Invoice }) {
   </Card>
 }
 
+/** The canvas for this shared navigation component is at tempo/designs/design-system/ledgerly-design-system/index.canvas.tsx. Keep its showcase in sync with the application sidebar. */
+export function ApplicationSidebar({ view, onNavigate, compact = false, profileOpen = false, onToggleProfile, onSettings, onProfileDetails }: {
+  view: AppView
+  onNavigate?: (view: AppView) => void
+  compact?: boolean
+  profileOpen?: boolean
+  onToggleProfile?: () => void
+  onSettings?: () => void
+  onProfileDetails?: () => void
+}) {
+  function navigate(next: AppView) {
+    onNavigate?.(next)
+  }
+
+  return <aside className="app-sidebar">
+    <Brand href={compact ? '#top' : '/'} static={compact} />
+    {compact
+      ? <div className="workspace-switcher" aria-label="Northstar Studio workspace"><span className="workspace-monogram">N</span><span><strong>Northstar Studio</strong><small>Business workspace</small></span><ChevronDown aria-hidden="true" /></div>
+      : <a className="workspace-switcher" href="/app/dashboard" aria-label="Northstar Studio workspace"><span className="workspace-monogram">N</span><span><strong>Northstar Studio</strong><small>Business workspace</small></span><ChevronDown aria-hidden="true" /></a>}
+    <nav className="app-nav" aria-label="Main navigation"><span className="nav-section-label">Workspace</span>
+      {appLinks.map(link => {
+        const Icon = link.icon
+        return compact
+          ? <span key={link.id} className="app-nav-link" data-active={view === link.id} aria-current={view === link.id ? 'page' : undefined}><Icon aria-hidden="true" /><span>{link.label}</span></span>
+          : onNavigate
+            ? <button key={link.id} className="app-nav-link" data-active={view === link.id} aria-current={view === link.id ? 'page' : undefined} onClick={() => navigate(link.id)}><Icon aria-hidden="true" /><span>{link.label}</span></button>
+            : <a key={link.id} className="app-nav-link" data-active={view === link.id} aria-current={view === link.id ? 'page' : undefined} href={link.href}><Icon aria-hidden="true" /><span>{link.label}</span></a>
+      })}
+      <span className="nav-section-label app-nav-group-label">Finance</span>
+      {appAreas.map(area => { const Icon = area.icon; return <span className="app-nav-link app-nav-static" aria-disabled="true" key={area.label}><Icon aria-hidden="true" /><span>{area.label}</span></span> })}
+    </nav>
+    <div className="sidebar-bottom">
+      <a className="sidebar-support" href="/#faq"><CircleHelp aria-hidden="true" /><span>Help and support</span></a>
+      <button className="sidebar-support" onClick={onSettings}><Settings2 aria-hidden="true" /><span>Settings</span></button>
+      <button className="profile-switcher" aria-expanded={profileOpen} aria-controls="profile-menu" onClick={onToggleProfile}>
+        <span className="profile-avatar">OB</span><span><strong>Olivia Bennett</strong><small>Owner</small></span><MoreHorizontal aria-hidden="true" />
+      </button>
+    </div>
+    {profileOpen && <div className="app-popover profile-menu" id="profile-menu" role="menu">
+      <div className="popover-person"><span className="profile-avatar">OB</span><span><strong>Olivia Bennett</strong><small>olivia@northstar.studio</small></span></div>
+      <button role="menuitem" onClick={onProfileDetails}><FileText aria-hidden="true" />Profile details</button>
+      <button role="menuitem" onClick={onSettings}><Settings2 aria-hidden="true" />Account settings</button>
+      <button role="menuitem" onClick={() => window.location.assign('/')}><LogOut aria-hidden="true" />Sign out</button>
+    </div>}
+  </aside>
+}
+
 function AppShell({ view, children, onNavigate, compact = false }: { view: AppView; children: ReactNode; onNavigate?: (view: AppView) => void; compact?: boolean }) {
   const [menu, setMenu] = useState<'search' | 'notifications' | 'profile' | null>(null)
   const [profileAnchor, setProfileAnchor] = useState<'sidebar' | 'topbar'>('topbar')
@@ -113,37 +160,15 @@ function AppShell({ view, children, onNavigate, compact = false }: { view: AppVi
   }
 
   return <div className={`application-shell${compact ? ' application-shell-compact' : ''}`} style={{ height: '1149px' }}>
-    <aside className="app-sidebar">
-      <Brand href={compact ? '#top' : '/'} static={compact} />
-      {compact
-        ? <div className="workspace-switcher" aria-label="Northstar Studio workspace"><span className="workspace-monogram">N</span><span><strong>Northstar Studio</strong><small>Business workspace</small></span><ChevronDown aria-hidden="true" /></div>
-        : <a className="workspace-switcher" href="/app/dashboard" aria-label="Northstar Studio workspace"><span className="workspace-monogram">N</span><span><strong>Northstar Studio</strong><small>Business workspace</small></span><ChevronDown aria-hidden="true" /></a>}
-      <nav className="app-nav" aria-label="Main navigation"><span className="nav-section-label">Workspace</span>
-        {appLinks.map(link => {
-          const Icon = link.icon
-          return compact
-            ? <span key={link.id} className="app-nav-link" data-active={view === link.id} aria-current={view === link.id ? 'page' : undefined}><Icon aria-hidden="true" /><span>{link.label}</span></span>
-            : onNavigate
-              ? <button key={link.id} className="app-nav-link" data-active={view === link.id} aria-current={view === link.id ? 'page' : undefined} onClick={() => navigate(link.id)}><Icon aria-hidden="true" /><span>{link.label}</span></button>
-              : <a key={link.id} className="app-nav-link" data-active={view === link.id} aria-current={view === link.id ? 'page' : undefined} href={link.href}><Icon aria-hidden="true" /><span>{link.label}</span></a>
-        })}
-        <span className="nav-section-label app-nav-group-label">Finance</span>
-        {appAreas.map(area => { const Icon = area.icon; return <span className="app-nav-link app-nav-static" aria-disabled="true" key={area.label}><Icon aria-hidden="true" /><span>{area.label}</span></span> })}
-      </nav>
-      <div className="sidebar-bottom">
-        <a className="sidebar-support" href="/#faq"><CircleHelp aria-hidden="true" /><span>Help and support</span></a>
-        <button className="sidebar-support" onClick={() => setSettingsOpen(true)}><Settings2 aria-hidden="true" /><span>Settings</span></button>
-        <button className="profile-switcher" aria-expanded={menu === 'profile' && profileAnchor === 'sidebar'} aria-controls="profile-menu" onClick={() => { setProfileAnchor('sidebar'); setMenu(menu === 'profile' && profileAnchor === 'sidebar' ? null : 'profile') }}>
-          <span className="profile-avatar">OB</span><span><strong>Olivia Bennett</strong><small>Owner</small></span><MoreHorizontal aria-hidden="true" />
-        </button>
-      </div>
-      {menu === 'profile' && profileAnchor === 'sidebar' && <div className="app-popover profile-menu" id="profile-menu" role="menu">
-        <div className="popover-person"><span className="profile-avatar">OB</span><span><strong>Olivia Bennett</strong><small>olivia@northstar.studio</small></span></div>
-        <button role="menuitem" onClick={() => { setProfileDetailsOpen(true); setMenu(null) }}><FileText aria-hidden="true" />Profile details</button>
-        <button role="menuitem" onClick={() => { setSettingsOpen(true); setMenu(null) }}><Settings2 aria-hidden="true" />Account settings</button>
-        <button role="menuitem" onClick={() => { setMenu(null); window.location.assign('/') }}><LogOut aria-hidden="true" />Sign out</button>
-      </div>}
-    </aside>
+    <ApplicationSidebar
+      view={view}
+      onNavigate={compact ? undefined : navigate}
+      compact={compact}
+      profileOpen={menu === 'profile' && profileAnchor === 'sidebar'}
+      onToggleProfile={() => { setProfileAnchor('sidebar'); setMenu(menu === 'profile' && profileAnchor === 'sidebar' ? null : 'profile') }}
+      onSettings={() => { setSettingsOpen(true); setMenu(null) }}
+      onProfileDetails={() => { setProfileDetailsOpen(true); setMenu(null) }}
+    />
     <div className="app-main-column">
       <header className="app-topbar">
         <div className="topbar-page">{compact ? <span className="mobile-sidebar-trigger" aria-hidden="true"><Menu aria-hidden="true" /></span> : <button className="mobile-sidebar-trigger" aria-label="Open workspace navigation" aria-expanded={mobileNavOpen} onClick={() => setMobileNavOpen(true)}><Menu aria-hidden="true" /></button>}<span className="topbar-workspace">Northstar Studio</span><span className="topbar-page-separator" aria-hidden="true">/</span><strong>{title}</strong></div>
@@ -258,20 +283,29 @@ function useInvoiceRevision() {
   }, [])
 }
 
-export function DashboardScreen({ onNavigate, compact = false }: { onNavigate?: (view: AppView) => void; compact?: boolean }) {
+/** The canvas for this Dashboard composition is at tempo/designs/design-system/ledgerly-design-system/index.canvas.tsx. Keep this financial summary aligned with the Dashboard screen. */
+export function DashboardFinancialOverview() {
   useInvoiceRevision()
   const netIncome = cashFlow.reduce((total, month) => total + month.income - month.expenses, 0)
   const dashboardInvoices = readInvoices()
   const openInvoices = dashboardInvoices.filter(invoice => invoice.status === 'Awaiting payment' || invoice.status === 'Overdue')
   const dashboardOpenBalance = openInvoices.reduce((total, invoice) => total + invoice.amount, 0)
-  const dashboardCollectedThisMonth = dashboardInvoices.filter(invoice => invoice.paidAt?.startsWith('2026-03')).reduce((total, invoice) => total + invoice.amount, 0)
+  const marchInvoices = dashboardInvoices.filter(invoice => invoice.paidAt?.startsWith('2026-03'))
+  const dashboardCollectedThisMonth = marchInvoices.reduce((total, invoice) => total + invoice.amount, 0)
+
+  return <div className="dashboard-overview"><section className="balance-overview"><div><span className="balance-label">Cash balance</span><strong className="balance-amount financial-value">{formatUSD(cashBalance)}</strong><span className="balance-context">Across business activity through March 24</span></div><div className="balance-net"><span>Net income this period</span><strong className="financial-value">{formatUSD(netIncome)}</strong><small>Oct 2025 — Mar 2026</small></div></section><div className="overview-side"><div><span>Open invoices</span><strong className="financial-value">{formatUSD(dashboardOpenBalance)}</strong><small>{openInvoices.length} invoices · {openInvoices.filter(invoice => invoice.status === 'Overdue').length} past due</small></div><div><span>Collected in March</span><strong className="financial-value">{formatUSD(dashboardCollectedThisMonth)}</strong><small>{marchInvoices.length} payments received</small></div></div></div>
+}
+
+export function DashboardScreen({ onNavigate, compact = false }: { onNavigate?: (view: AppView) => void; compact?: boolean }) {
+  useInvoiceRevision()
+  const dashboardInvoices = readInvoices()
   const newInvoice = compact
     ? <span className="button app-mockup-action" data-variant="primary" data-size="md"><Plus aria-hidden="true" /><span>New invoice</span></span>
     : onNavigate
       ? <Button leadingIcon={<Plus aria-hidden="true" />} onClick={() => onNavigate('create-invoice')}>New invoice</Button>
       : <a className="button" data-variant="primary" data-size="md" href="/app/create-invoice"><Plus aria-hidden="true" /><span>New invoice</span></a>
   return <AppShell view="dashboard" onNavigate={onNavigate} compact={compact}><PageHeading title="Good morning, Olivia" description={`${formatToday()} · Northstar Studio`}>{newInvoice}</PageHeading>
-    <div className="dashboard-overview"><section className="balance-overview"><div><span className="balance-label">Cash balance</span><strong className="balance-amount financial-value">{formatUSD(cashBalance)}</strong><span className="balance-context">Across business activity through March 24</span></div><div className="balance-net"><span>Net income this period</span><strong className="financial-value">{formatUSD(netIncome)}</strong><small>Oct 2025 — Mar 2026</small></div></section><div className="overview-side"><div><span>Open invoices</span><strong className="financial-value">{formatUSD(dashboardOpenBalance)}</strong><small>{openInvoices.length} invoices · {openInvoices.filter(invoice => invoice.status === 'Overdue').length} past due</small></div><div><span>Collected in March</span><strong className="financial-value">{formatUSD(dashboardCollectedThisMonth)}</strong><small>{dashboardInvoices.filter(invoice => invoice.paidAt?.startsWith('2026-03')).length} payments received</small></div></div></div>
+    <DashboardFinancialOverview />
     <div className="dashboard-main-grid"><CashFlowPanel /><section className="dashboard-recent"><div className="section-panel-heading"><div><h2>Latest invoices</h2><p>Recent client billing</p></div>{compact ? <span className="text-link">View all<ArrowRight aria-hidden="true" /></span> : onNavigate ? <button className="text-link" onClick={() => onNavigate('invoices')}>View all<ArrowRight aria-hidden="true" /></button> : <a className="text-link" href="/app/invoices">View all<ArrowRight aria-hidden="true" /></a>}</div><InvoiceTable rows={dashboardInvoices.slice(0, 4)} compact /></section></div>
     <ActivityPanel />
   </AppShell>
@@ -432,6 +466,8 @@ function Clock3Icon() { return <Activity aria-hidden="true" /> }
 defineControls(InvoiceTable, { rows: { type: 'object' }, compact: { type: 'boolean' } });
 defineControls(CashFlowChart, { variant: { type: 'select' } });
 defineControls(CashFlowLegend, { compact: { type: 'boolean' } });
+defineControls(ApplicationSidebar, { view: { type: 'select' }, compact: { type: 'boolean' }, profileOpen: { type: 'boolean' }, onNavigate: false, onToggleProfile: false, onSettings: false, onProfileDetails: false });
+defineControls(DashboardFinancialOverview, {});
 defineControls(DashboardScreen, { compact: { type: 'boolean' }, onNavigate: false });
 defineControls(InvoiceListScreen, { compact: { type: 'boolean' }, onNavigate: false });
 defineControls(CreateInvoiceScreen, { compact: { type: 'boolean' }, demoStep: { type: 'number' }, onNavigate: false });
