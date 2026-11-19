@@ -13,7 +13,7 @@ export default function LedgerlyProductCanvas() {
         id="Marketing Desktop"
         name="Marketing · Desktop · Full page"
         component={MarketingSite}
-        layout={{ x: 0, y: 0, width: 1440, height: 9237.859375 }}
+        layout={{ x: 0, y: 0, width: 1440, height: 9238 }}
       />
       <Storyboard
         id="Marketing Mobile"
