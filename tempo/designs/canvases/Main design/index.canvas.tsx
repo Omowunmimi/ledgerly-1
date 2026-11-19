@@ -19,46 +19,46 @@ export default function LedgerlyProductCanvas() {
         id="Marketing Mobile"
         name="Marketing · Mobile · Full page"
         component={MarketingSite}
-        layout={{ x: 1540, y: 0, width: 390, height: 11800 }}
+        layout={{ x: 1540, y: 0, width: 390, height: 12416 }}
       />
 
       <Storyboard
         id="Dashboard Desktop"
         name="Dashboard · Desktop"
         component={() => <DashboardScreen shellHeight="1260px" />}
-        layout={{ x: 0, y: 12343, width: 1440, height: 1260 }}
+        layout={{ x: -743, y: 13636, width: 1440, height: 1260 }}
       />
       <Storyboard
         id="Dashboard Mobile"
         name="Dashboard · Mobile"
         component={() => <DashboardScreen shellHeight="1768px" />}
-        layout={{ x: 1553, y: 12343, width: 390, height: 1768 }}
+        layout={{ x: 810, y: 13636, width: 390, height: 1768 }}
       />
 
       <Storyboard
         id="Invoices Desktop"
         name="Invoice List · Desktop"
         component={InvoiceListScreen}
-        layout={{ x: 2056, y: 12343, width: 1440, height: 1260 }}
+        layout={{ x: 1313, y: 13636, width: 1440, height: 1260 }}
       />
       <Storyboard
         id="Invoices Mobile"
         name="Invoice List · Mobile"
         component={InvoiceListScreen}
-        layout={{ x: 1540, y: 14200, width: 390, height: 1149 }}
+        layout={{ x: 2866, y: 13636, width: 390, height: 1149 }}
       />
 
       <Storyboard
         id="Create Invoice Desktop"
         name="Create Invoice · Desktop"
         component={CreateInvoiceScreen}
-        layout={{ x: 4112, y: 12343, width: 1440, height: 1860 }}
+        layout={{ x: 3369, y: 13636, width: 1440, height: 1860 }}
       />
       <Storyboard
         id="Create Invoice Mobile"
         name="Create Invoice · Mobile"
         component={() => <CreateInvoiceScreen shellHeight="2826px" />}
-        layout={{ x: 5665, y: 12343, width: 390, height: 2826 }}
+        layout={{ x: 4922, y: 13636, width: 390, height: 2826 }}
       />
     </Canvas>
   );

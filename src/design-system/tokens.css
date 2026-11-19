@@ -179,7 +179,7 @@
   --layout-marketing-padding-mobile: clamp(1.125rem, 5vw, 1.5rem);
   --layout-marketing-cta-max: 66rem;
   --layout-marketing-section-space: clamp(5rem, 8vw, 7rem);
-  --layout-marketing-section-space-mobile: clamp(3.75rem, 9vw, 4.75rem);
+  --layout-marketing-section-space-mobile: 80px;
   --layout-app-max: 96rem;
   --layout-sidebar-width: 15rem;
   --layout-app-tablet-sidebar-width: 13rem;

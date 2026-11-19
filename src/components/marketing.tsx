@@ -153,9 +153,9 @@ export default function MarketingSite() {
   }, [])
   return <div id="top" className="marketing-site">
     <MarketingHeader />
-    <main>
+    <main style={{ height: "11658px" }}>
       <section className="marketing-hero"><div className="section-shell hero-inner"><div className="hero-copy"><h1>Your business finances, in clear view.</h1><p>Ledgerly brings invoicing, expenses, customers and cash flow together for small-business owners who need a reliable view of what is happening and what needs attention.</p><div className="hero-actions"><a className="button hero-primary-cta" data-variant="secondary" data-size="lg" href="/app/dashboard">Get Started<ArrowRight aria-hidden="true" /></a><a style={{ justifyContent: "center" }} className="hero-text-link" href="#guided-demo">See How It Works</a></div></div><div className="hero-preview-wrap"><div className="hero-product-shell"><div className="preview-chrome"><span className="preview-dots" aria-hidden="true"><i /><i /><i /></span><span>Ledgerly · Northstar Studio</span><span>Mar 2026</span></div><div className="hero-product-content"><DashboardScreen compact /></div></div></div></div></section>
-      <section className="statement-section section-shell" id="about" data-reveal style={{ margin: '140px 100px 64px' }}>
+      <section className="statement-section section-shell" id="about" data-reveal style={{ margin: '140px 100px 64px', marginTop: '80px', marginBottom: '80px', marginLeft: '20px', marginRight: '20px' }}>
         <div className="statement-copy">
           <h2>So your business can see what it owes.</h2>
           <p>Bring invoices, receipts and customer details together. See what is coming in, what has gone out and which obligation needs your attention without piecing the picture together from separate tools.</p>

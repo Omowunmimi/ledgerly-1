@@ -1188,7 +1188,8 @@
   .marketing-site .product-tour-heading, .marketing-site .workspace-overview-label,
   .marketing-site .workspace-dashboard-preview, .marketing-site .workspace-supporting-previews { width: calc(100% - var(--layout-marketing-padding-mobile) - var(--layout-marketing-padding-mobile)); }
   .marketing-site .closing-inner.section-shell, .marketing-site .closing-inner { width: calc(100% - var(--layout-marketing-padding-mobile) - var(--layout-marketing-padding-mobile)); }
-  .marketing-site .statement-section { grid-template-columns: 1fr; gap: 1.5rem; }
+  .marketing-site .statement-section { grid-template-columns: 1fr; gap: 1.5rem; margin-block: var(--layout-marketing-section-space-mobile) !important; }
+  .marketing-site .closing-section { padding-block: var(--layout-marketing-section-space-mobile); }
   .marketing-site .statement-copy h2 { font-size: clamp(2.25rem, 10vw, 3.25rem); }
   .marketing-site .statement-finance-summary { width: 100%; }
   .marketing-site .bento-card .bento-copy > p { font-size: 0.75rem; }
