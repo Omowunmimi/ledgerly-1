@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "major": 4,
+  "appRoot": "./..",
+  "roots": [
+    {
+      "file": "../src/design-system/tokens.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    },
+    {
+      "file": "../src/index.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    },
+    {
+      "file": "../src/styles/system.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    },
+    {
+      "file": "../src/styles/application.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    },
+    {
+      "file": "../src/styles/marketing.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    },
+    {
+      "file": "../src/styles/showcase.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    },
+    {
+      "file": "../src/App.css",
+      "engine": false,
+      "tailwind": false,
+      "config": false
+    }
+  ],
+  "owner": "./globals.css",
+  "globals": "./globals.css",
+  "config": null,
+  "sources": [
+    "../src",
+    "./designs"
+  ],
+  "legacyRoots": []
+}
