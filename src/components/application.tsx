@@ -162,7 +162,7 @@ function AppShell({ view, children, onNavigate, compact = false, shellHeight = '
   return <div className={`application-shell${compact ? ' application-shell-compact' : ''}`} style={{ height: shellHeight }}>
     <ApplicationSidebar
       view={view}
-      onNavigate={compact ? undefined : navigate}
+      onNavigate={compact || !onNavigate ? undefined : navigate}
       compact={compact}
       profileOpen={menu === 'profile' && profileAnchor === 'sidebar'}
       onToggleProfile={() => { setProfileAnchor('sidebar'); setMenu(menu === 'profile' && profileAnchor === 'sidebar' ? null : 'profile') }}
